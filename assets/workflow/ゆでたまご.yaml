@@ -1,0 +1,21 @@
+name: ゆでたまご(硬め)
+tasks:
+  - type: text
+    description: 鍋に水とタマゴを入れて火にかける
+    note: 水はタマゴがひたひたになるかならないか程度の量
+  - type: wait
+    wait: 300
+    description: 沸騰させた状態で5分待つ
+  - type: wait
+    wait: 360
+    description: 火を止めて6分待つ
+  - type: wait
+    wait: 300
+    description: お湯を捨てて水を入れ直して5分待つ
+  - type: note
+    description: これで完成です！ 最近はコンロの機能で沸騰＋タイマーがあると思いますが、沸騰＋5分のタイマーをかけておけば、コンロの火が止まってから6分放置、水を入れ替えて5分放置でOKです
+  - type: note
+    description: カラは水を流しながら、割れ目から水を滑り込ませる感じで向けばスルッと剥けます
+tags:
+  - 水
+  - タマゴ

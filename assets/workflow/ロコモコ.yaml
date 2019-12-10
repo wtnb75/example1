@@ -1,0 +1,14 @@
+tasks:
+  - type: text
+    description: 鍋にレトルトのハンバーグを入れて水で満たし、火にかける
+  - type: wait
+    description: 沸騰したら5分あたため。その間にフライパンにタマゴを割り入れて目玉焼きを作る
+    wait: 300
+    note: もうちょっと短くてもいいかも。コンロの機能で沸騰＋5分で放置している
+  - type: text
+    description: 適当に、好きなように盛り付けて食べる
+  - type: note
+    description: ほぼ放置で作れるので、お腹が空いた時の朝食に食べてます
+tags:
+  - タマゴ
+  - レトルトのハンバーグ

@@ -1,0 +1,31 @@
+name: メロンパンのクッキー生地の部分
+tasks:
+  - type: url
+    url: https://cookpad.com/recipe/4369714
+    description: あっとゆーまのメロンパンクッキー生地
+    note: 元ネタです
+  - type: text
+    description: バター40gを混ぜやすいように溶かす
+    note: 電子レンジや湯煎など、やりやすいやり方で適当にやっちゃってください！
+  - type: text
+    description: バター40g、砂糖75g、タマゴ1個、薄力粉130g、バニラエッセンス数滴をボウルに入れてよく混ぜる
+    note: 分量はそれほど厳密でなくても何とかなります
+  - type: text
+    description: できたらラップに出して、棒状に巻いていく
+  - type: wait
+    description: 冷蔵庫に放り込んで1時間待つ
+    wait: 3600
+  - type: text
+    description: 包丁で30gずつくらいに切り分けてそれぞれラップにかぶせる
+  - type: text
+    description: ボウルの裏やまな板など、平らなものでラップの上から押し潰して伸ばす
+  - type: note
+    description: 冷凍庫に入れて保存できますよ。
+  - type: note
+    description: ちぎりパンを使ってメロンパンを作る場合は、作り始める時に冷凍庫から取り出して常温解凍しつつパンを作っていき、オーブンに並べる段階でパン生地の上にクッキー生地を上に乗せて、その上から砂糖を振っておくと良い感じに仕上がる。
+tags:
+  - バター
+  - 砂糖
+  - タマゴ
+  - 薄力粉
+  - バニラエッセンス
