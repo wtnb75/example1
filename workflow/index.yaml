@@ -1,0 +1,8 @@
+workflow:
+  - そぼろ.yaml
+  - ロコモコ.yaml
+  - 陸上教室.yaml
+  - ちぎりパン.yaml
+  - ゆでたまご.yaml
+  - メロンパン1.yaml
+  - チーズスフレ.yaml
