@@ -1,0 +1,17 @@
+name: 味噌とマヨネーズのメシ
+tasks:
+  - type: text
+    description: 適量のネギを刻む
+  - type: text
+    description: 適量の味噌とマヨネーズと刻んだネギを丼にぶち込む
+  - type: text
+    description: 電子レンジで30秒加熱
+  - type: text
+    description: ごはんを丼にぶち込んで混ぜる
+  - type: note
+    description: そのまま豪快にお食べください。お手軽！
+tags:
+  - 味噌
+  - マヨネーズ
+  - ネギ
+  - ごはん
