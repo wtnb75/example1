@@ -16,6 +16,10 @@ jobs:
         channel: dev
     - name: config
       run: flutter config --enable-web
+    - name: doctor
+      run: flutter doctor
+    - name: devices
+      run: flutter devices
     - name: pub get
       run: flutter pub get
     #- name: test
