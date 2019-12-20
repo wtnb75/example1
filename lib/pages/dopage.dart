@@ -162,19 +162,19 @@ class _DoPageIndexState extends State<DoPageIndex> {
   }
 
   Widget build1(BuildContext context, int index) {
-    return Container(
-        alignment: Alignment.topLeft,
-        child: FlatButton(
-          child: Text(fname2name(names[index])),
-          onPressed: () {
-            log.shout("pushed ${index}: ${names[index]}");
-            readWork(widget.input, "workflow/${names[index]}").then((work) {
-              log.shout("navigate to ${work.name}");
-              Navigator.of(context).push(
-                  MaterialPageRoute(builder: (c) => DoParent(flow: work)));
-            });
-          },
-        ));
+    log.shout("build1 ${index} ${names[index]}");
+    return FlatButton(
+      color: Colors.blueGrey[200],
+      child: Text(fname2name(names[index])),
+      onPressed: () {
+        log.shout("pushed ${index}: ${names[index]}");
+        readWork(widget.input, "workflow/${names[index]}").then((work) {
+          log.shout("navigate to ${work.name}");
+          Navigator.of(context)
+              .push(MaterialPageRoute(builder: (c) => DoParent(flow: work)));
+        });
+      },
+    );
   }
 
   @override
@@ -183,10 +183,12 @@ class _DoPageIndexState extends State<DoPageIndex> {
       reload();
       return Text("loading...");
     }
-    return ListView.separated(
-      separatorBuilder: (context, index) => Divider(color: Colors.black),
-      itemCount: names.length,
-      itemBuilder: build1,
+    log.shout("wrap");
+    return Wrap(
+      spacing: 4.0,
+      runSpacing: 4.0,
+      direction: Axis.horizontal,
+      children: new List.generate(names.length, (i) => build1(context, i)),
     );
   }
 }
@@ -198,6 +200,7 @@ class DoParent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    log.shout("doparent ${flow.name}");
     return Scaffold(
       appBar: AppBar(title: Text("${flow.name}")),
       body: DoPage(flow: flow),
@@ -232,39 +235,56 @@ class _DoPageState extends State<DoPage> {
     super.initState();
   }
 
+  Widget maketip(TaskIf task, Widget prep, Widget post) {
+    List<Widget> res = <Widget>[];
+    if (prep != null) {
+      res.add(prep);
+    }
+    if (task.description != null) {
+      res.add(Expanded(child: Text(task.description)));
+    }
+    if (post != null) {
+      res.add(post);
+    }
+    if (task.note != null) {
+      return Tooltip(message: task.note, child: Row(children: res));
+    } else {
+      return Row(children: res);
+    }
+  }
+
   Widget _makewidget(int idx, TaskIf task) {
+    log.shout("task${idx} type=${task.type} ${task.runtimeType}");
     if (task is TaskText) {
-      return Tooltip(
-          message: task.note,
-          child: Row(children: <Widget>[
-            Checkbox(
-              value: flags[idx],
-              onChanged: (flag) {
-                click(idx, flag);
-              },
-            ),
-            Expanded(child: Text(task.description)),
-          ]));
+      log.shout("text ${task.toMap()}");
+      return maketip(
+          task,
+          Checkbox(
+            value: flags[idx],
+            onChanged: (flag) {
+              click(idx, flag);
+            },
+          ),
+          null);
     } else if (task is TaskNote) {
       log.shout("note: ${task.toMap()}");
-      return Tooltip(message: task.note, child: Text(task.description));
+      return maketip(task, null, null);
     } else if (task is TaskWait) {
-      return Tooltip(
-          message: task.note,
-          child: Row(children: <Widget>[
-            Checkbox(
-              value: flags[idx],
-              onChanged: (flag) {
-                click(idx, flag);
-              },
-            ),
-            Expanded(child: Text(task.description)),
-            WaitTimer(
-                duration: task.wait,
-                onFinished: () {
-                  click(idx, true);
-                }),
-          ]));
+      return maketip(
+          task,
+          Checkbox(
+            value: flags[idx],
+            onChanged: (flag) {
+              click(idx, flag);
+            },
+          ),
+          WaitTimer(
+              duration: task.wait,
+              onFinished: () {
+                click(idx, true);
+              }));
+    } else if (task is TaskUrl) {
+      return maketip(task, null, Text(task.url));
     }
     return Text("invalid task: ${task.runtimeType}, ${task.toMap()}");
   }

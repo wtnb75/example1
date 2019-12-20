@@ -17,7 +17,11 @@ class TaskIf {
     log.shout("fromMap: ${obj}");
     type = obj["type"];
     description = obj["description"];
-    note = obj["note"];
+    if (obj["note"] is List) {
+      note = obj["note"].join("\n");
+    } else {
+      note = obj["note"];
+    }
   }
 
   Map<String, dynamic> toMap() {
@@ -41,6 +45,17 @@ class TaskText extends TaskIf {
 
 class TaskNote extends TaskIf {
   TaskNote(Map<String, dynamic> obj) : super(obj);
+}
+
+class TaskUrl extends TaskIf {
+  String url;
+
+  TaskUrl(Map<String, dynamic> obj) : super(obj);
+
+  void fromMap(Map<String, dynamic> obj) {
+    super.fromMap(obj);
+    url = obj["url"];
+  }
 }
 
 class TaskWait extends TaskIf {
@@ -93,6 +108,8 @@ TaskIf genTask(Map<String, dynamic> obj) {
       return TaskNote(obj);
     case "wait":
       return TaskWait(obj);
+    case "url":
+      return TaskUrl(obj);
   }
   return TaskIf(obj);
 }
