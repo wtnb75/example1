@@ -39,30 +39,26 @@ class _PlanPageIndexState extends State<PlanPageIndex> {
   }
 
   Widget build1(BuildContext context, int index) {
-    return Container(
-        alignment: Alignment.topLeft,
-        child: FlatButton(
-          child: Text(fname2name(names[index])),
-          onPressed: () {
-            log.shout("pushed ${index}: ${names[index]}");
-            readWork(widget.input, "workflow/${names[index]}").then((work) {
-              log.shout("navigate to ${work.name}");
-              Navigator.of(context).push(
-                  MaterialPageRoute(builder: (c) => PlanParent(flow: work)));
-            });
-          },
-        ));
+    return FlatButton(
+      color: Colors.blueGrey[200],
+      child: Text(fname2name(names[index])),
+      onPressed: () {
+        log.shout("pushed ${index}: ${names[index]}");
+        readWork(widget.input, "workflow/${names[index]}").then((work) {
+          log.shout("navigate to ${work.name}");
+          Navigator.of(context)
+              .push(MaterialPageRoute(builder: (c) => PlanParent(flow: work)));
+        });
+      },
+    );
   }
 
   Widget build_add(BuildContext context) {
-    return Container(
-      alignment: Alignment.center,
-      child: IconButton(
-        icon: Icon(Icons.add),
-        onPressed: () {
-          log.shout("pushed");
-        },
-      ),
+    return IconButton(
+      icon: Icon(Icons.add),
+      onPressed: () {
+        log.shout("pushed");
+      },
     );
   }
 
@@ -72,17 +68,17 @@ class _PlanPageIndexState extends State<PlanPageIndex> {
       reload();
       return Text("loading...");
     }
-    return ListView.separated(
-      separatorBuilder: (context, index) => Divider(color: Colors.black),
-      itemCount: names.length + 2,
-      itemBuilder: (ctxt, i) {
-        if (i == 0 || i == names.length + 1) {
-          return build_add(context);
-        } else {
-          return build1(context, i - 1);
-        }
-      },
-    );
+    return Wrap(
+        spacing: 4.0,
+        runSpacing: 4.0,
+        direction: Axis.horizontal,
+        children: new List.generate(names.length + 2, (i) {
+          if (i == 0 || i == names.length + 1) {
+            return build_add(context);
+          } else {
+            return build1(context, i - 1);
+          }
+        }));
   }
 }
 
