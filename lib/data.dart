@@ -16,7 +16,11 @@ class TaskIf {
   void fromMap(Map<String, dynamic> obj) {
     log.shout("fromMap: ${obj}");
     type = obj["type"];
-    description = obj["description"];
+    if (obj["description"] is List) {
+      description = obj["description"].join("\n");
+    } else {
+      description = obj["description"];
+    }
     if (obj["note"] is List) {
       note = obj["note"].join("\n");
     } else {
