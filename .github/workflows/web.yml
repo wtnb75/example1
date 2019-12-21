@@ -8,6 +8,9 @@ jobs:
   build-web:
     name: flutter build and deploy website
     runs-on: ubuntu-latest
+    env:
+      LANG: ja_JP.utf8
+      LC_ALL: ja_JP.utf8
 
     steps:
     - uses: actions/checkout@master
