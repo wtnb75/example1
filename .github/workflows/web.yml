@@ -28,9 +28,10 @@ jobs:
       run: flutter build web
     - name: fix urlencode
       run: |
+        set -x
         sudo -E apt install -y -qq gridsite-clients
         for i in build/web/assets/workflow/*.yaml ; do
-          n=$(urlencode -e $i)
+          n=$(urlencode -d $i)
           [ "$n" != "$i" ] && mv -i $i $n
         done
       env:
