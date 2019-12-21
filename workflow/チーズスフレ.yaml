@@ -3,6 +3,7 @@ tasks:
   - type: url
     url: https://cookpad.com/recipe/4218752
     description: ヨーグルトチーズスフレ
+    note: 元ネタです
   - type: text
     description: タマゴ3個を卵黄と卵白に分ける
   - type: text

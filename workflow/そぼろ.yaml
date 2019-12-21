@@ -1,5 +1,9 @@
 name: そぼろのレシピ
 tasks:
+  - type: url
+    url: https://www.youtube.com/watch?v=-fLGEZPv9xY
+    description: 【大食い】3色そぼろ丼 総重量6.0㎏～簡単・安い・美味い～
+    note: 元ネタです
   - type: text
     description: 牛ひき肉をお湯に加え5秒ほどくぐらせたらザルに上げる
   - type: text
