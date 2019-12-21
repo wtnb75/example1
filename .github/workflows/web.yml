@@ -13,6 +13,8 @@ jobs:
       LC_ALL: ja_JP.utf8
 
     steps:
+    - name: setup locale
+      run: localedef -f UTF-8 -i ja_JP ja_JP
     - uses: actions/checkout@master
     - uses: subosito/flutter-action@v1
       with:
