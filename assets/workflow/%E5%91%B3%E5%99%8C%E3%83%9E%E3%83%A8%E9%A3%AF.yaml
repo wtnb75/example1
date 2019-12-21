@@ -1,5 +1,9 @@
 name: 味噌とマヨネーズのメシ
 tasks:
+  - type: url
+    url: https://recipe.rakuten.co.jp/recipe/1770021255/
+    description: 混ぜるだけで簡単☆青ネギの味噌マヨご飯
+    note: 元ネタです
   - type: text
     description: 適量のネギを刻む
   - type: text
