@@ -32,7 +32,7 @@ jobs:
         sudo -E apt install -y -qq gridsite-clients
         for i in build/web/assets/workflow/*.yaml ; do
           n=$(urlencode -d $i)
-          [ "$n" != "$i" ] && mv -i $i $n
+          [ "$n" != "$i" ] && mv $i $n || true
         done
       env:
         DEBIAN_FRONTEND: noninteractive
