@@ -11,6 +11,7 @@ jobs:
     env:
       LANG: ja_JP.utf8
       LC_ALL: ja_JP.utf8
+      DEBIAN_FRONTEND: noninteractive
 
     steps:
     - name: setup locale
