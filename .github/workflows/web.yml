@@ -31,6 +31,13 @@ jobs:
     #  run: flutter test
     - name: build web
       run: flutter build web
+    - name: fix urlencode
+      run: |
+        apt install -y gridsite-clients
+        for i in build/web/assets/workflow/*.yaml ; do
+          n=$(urlencode -e $i)
+          [ "$n" != "$i" ] && mv -i $i $n
+        done
     - name: list resource
       run: ls -lR build/web
     #- name: disable jekyll
