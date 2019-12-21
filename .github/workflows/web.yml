@@ -8,14 +8,8 @@ jobs:
   build-web:
     name: flutter build and deploy website
     runs-on: ubuntu-latest
-    env:
-      LANG: ja_JP.utf8
-      LC_ALL: ja_JP.utf8
-      DEBIAN_FRONTEND: noninteractive
 
     steps:
-    - name: setup locale
-      run: sudo localedef -f UTF-8 -i ja_JP ja_JP
     - uses: actions/checkout@master
     - uses: subosito/flutter-action@v1
       with:
@@ -34,18 +28,20 @@ jobs:
       run: flutter build web
     - name: fix urlencode
       run: |
-        sudo apt install -y gridsite-clients
+        sudo -E apt install -y -qq gridsite-clients
         for i in build/web/assets/workflow/*.yaml ; do
           n=$(urlencode -e $i)
           [ "$n" != "$i" ] && mv -i $i $n
         done
+      env:
+        DEBIAN_FRONTEND: noninteractive
     - name: list resource
       run: ls -lR build/web
-    #- name: disable jekyll
-    #  run: touch build/web/.nojekyll
-    #- name: deploy gh-pages
-    #  uses: peaceiris/actions-gh-pages@v2
-    #  env:
-    #    ACTIONS_DEPLOY_KEY: ${{ secrets.ACTIONS_DEPLOY_KEY }}
-    #    PUBLISH_BRANCH: gh-pages
-    #    PUBLISH_DIR: ./build/web
+    - name: disable jekyll
+      run: touch build/web/.nojekyll
+    - name: deploy gh-pages
+      uses: peaceiris/actions-gh-pages@v2
+      env:
+        ACTIONS_DEPLOY_KEY: ${{ secrets.ACTIONS_DEPLOY_KEY }}
+        PUBLISH_BRANCH: gh-pages
+        PUBLISH_DIR: ./build/web
