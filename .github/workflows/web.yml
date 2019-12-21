@@ -2,7 +2,7 @@ name: build-web
 
 on:
   push:
-    branches: [master, escape-filename]
+    branches: [master]
 
 jobs:
   build-web:
