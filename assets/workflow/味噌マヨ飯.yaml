@@ -13,7 +13,7 @@ tasks:
   - type: text
     description: ごはんを丼にぶち込んで混ぜる
   - type: note
-    description: そのまま豪快にお食べください。お手軽！
+    description: そのまま豪快にお食べください。お手軽！ ネギの他にも野菜を刻んだり、揚げ玉を入れたり、色々なアレンジを楽しみましょう！
 tags:
   - 味噌
   - マヨネーズ

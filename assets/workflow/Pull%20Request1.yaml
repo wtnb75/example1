@@ -1,0 +1,38 @@
+name: 組織内のPull Requestのやり方
+tasks:
+  - type: text
+    description: issueを作り、事前の検討や議論を記述していきます
+  - type: text
+    description: git checkout -b issue_XXX
+    note:
+      - ブランチを作り、開発を始めます
+      - ブランチ名は迷ったらissue_XXXのようにissueの番号を使うとよいでしょう
+  - type: text
+    description: |
+      git add xxx
+      git commit -m 'メッセージ'
+      git push origin issue_XXX
+    note: ブランチにpushしていきます
+  - type: text
+    description: hub pull-request -i XXX
+    note:
+      - issueをPRに変換します
+      - 作業中であればPRのタイトルに「WIP」をつけると無駄なレビューをせずに済みます
+  - type: text
+    description: レビューを受けます。コメントに応じて修正し、ブランチにpushを重ねていきます
+    note:
+      - この段階でcommitをまとめる必要はありません。少しずつ積み重ねていきます。
+      - 作業中はWIPをつけて、再度レビューを受けたくなったらWIPを外したり、PRへのコメントでメンションを入れたりしましょう
+  - type: text
+    description: 問題なければマージボタンを「Squash and Merge」にして、押します。
+    note:
+      - Squash and MergeはPRを1つのcommitにまとめます
+      - マージコミットもなしで、文字通り1つのcommitになります
+  - type: text
+    description: ブランチを削除します
+  - type: text
+    description: |
+      git checkout master
+      git pull
+    note:
+      - リモートでSquash and Mergeされたブランチはもう使いません。
