@@ -1,5 +1,5 @@
 workflow:
-  - Pull Request1.yaml
+  - PullRequest1.yaml
   - そぼろ.yaml
   - ロコモコ.yaml
   - 陸上教室.yaml
