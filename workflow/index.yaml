@@ -1,6 +1,7 @@
 workflow:
   - PullRequest1.yaml
   - そぼろ.yaml
+  - 豚角煮.yaml
   - ロコモコ.yaml
   - 陸上教室.yaml
   - ちぎりパン.yaml
