@@ -1,0 +1,42 @@
+name: 豚の角煮のレシピ
+tasks:
+  - type: url
+    url: https://cookpad.com/recipe/2650807
+    description: 豚の角煮の現在の定番
+    note: 元ネタです
+  - type: text
+    description: 豚ばらブロックを鍋に入れ、ひたひたの水、酒大さじ2、長ネギの青いところ、ニンニク、生姜などを入れる
+  - type: text
+    description: 火をつけて煮る。沸騰したらアクを取り除きながら弱火で1時間以上
+  - type: text
+    description: 火を止めて常温になるまで冷やす
+  - type: text
+    description: 肉を取り出してラップで包む
+  - type: text
+    description: 煮汁はラップで覆って保存
+  - type: text
+    description: 肉は脂身を下にして冷蔵庫で一晩寝かせる
+  - type: text
+    description: 煮汁のラップを剥がして油を取り除き、長ネギ等も取り除く
+  - type: text
+    description: 肉を大きめの一口大に切る
+  - type: text
+    description: 煮汁に砂糖大さじ3、酒大さじ2、みりん大さじ2を入れる
+  - type: text
+    description: 煮汁に肉を入れて加熱
+  - type: text
+    description: 沸騰したら醤油大さじ1、めんつゆ(3倍濃縮)大さじ1を加えて弱火で1時間
+  - type: text
+    description: 最後は強火で煮詰める。煮汁が適度に減ってきたら完成！
+tags:
+  - 豚ばらブロック
+  - 水
+  - 酒
+  - 長ネギ
+  - ニンニク
+  - 生姜
+  - 煮汁
+  - 砂糖
+  - みりん
+  - 醤油
+  - めんつゆ(3倍濃縮)
