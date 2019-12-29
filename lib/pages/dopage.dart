@@ -284,7 +284,8 @@ class _DoPageState extends State<DoPage> {
                 click(idx, true);
               }));
     } else if (task is TaskUrl) {
-      return maketip(task, null, Text(task.url));
+      Widget res = maketip(task, null, null);
+      return Column(children: <Widget>[res, Text(task.url)]);
     }
     return Text("invalid task: ${task.runtimeType}, ${task.toMap()}");
   }
