@@ -1,14 +1,14 @@
 name: 紅茶
 tasks:
-- type: text
-  desscription: できればやかんではなく、鍋に2リットルの水を入れ、沸かす。
-- type: wait
-  wait: 1260
-  desscription: 沸騰したら火を止め、ティーバッグを3包入れてふたをし、21分蒸らす。
-- type: text
-  description: ふたをはずし、菜箸などでそっとティーバッグを取り出す。
-- type: text
-  description: 粗熱が取れるまで放っておき、粗熱が取れたらピッチャーやジャグなどに移し変え、冷蔵庫でひと晩冷やす。
+  - type: text
+    description: できればやかんではなく、鍋に2リットルの水を入れ、沸かす。
+  - type: wait
+    wait: 1260
+    description: 沸騰したら火を止め、ティーバッグを3包入れてふたをし、21分蒸らす。
+  - type: text
+    description: ふたをはずし、菜箸などでそっとティーバッグを取り出す。
+  - type: text
+    description: 粗熱が取れるまで放っておき、粗熱が取れたらピッチャーやジャグなどに移し変え、冷蔵庫でひと晩冷やす。
 tags:
 - やかん
 - 鍋
