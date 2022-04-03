@@ -43,7 +43,7 @@ jobs:
       run: touch build/web/.nojekyll
     - name: deploy gh-pages
       uses: peaceiris/actions-gh-pages@v3
-      env:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        github_token: ${{ secrets.github_token }}
         force_orphan: true
         publish_dir: ./build/web
