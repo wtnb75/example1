@@ -1,0 +1,12 @@
+workflow:
+  - PullRequest1.yaml
+  - 紅茶.yaml
+  - そぼろ.yaml
+  - 豚角煮.yaml
+  - ロコモコ.yaml
+  - 陸上教室.yaml
+  - ちぎりパン.yaml
+  - ゆでたまご.yaml
+  - 味噌マヨ飯.yaml
+  - メロンパン1.yaml
+  - チーズスフレ.yaml

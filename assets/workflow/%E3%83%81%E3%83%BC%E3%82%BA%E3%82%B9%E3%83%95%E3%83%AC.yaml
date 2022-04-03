@@ -1,0 +1,34 @@
+name: ヨーグルトを使ったチーズスフレ
+tasks:
+  - type: url
+    url: https://cookpad.com/recipe/4218752
+    description: ヨーグルトチーズスフレ
+    note: 元ネタです
+  - type: text
+    description: タマゴ3個を卵黄と卵白に分ける
+  - type: text
+    description: クリームチーズ200g、無糖ヨーグルト100g、砂糖60~70g、小麦粉大さじ2、卵黄をミキサーに入れて混ぜる
+  - type: text
+    description: 卵白を泡立ててメレンゲを作る
+  - type: text
+    description: ミキサーの材料をボウルに移し、メレンゲを壊さないようにボウルに投入してゆっくり混ぜる
+  - type: text
+    description: 型に油を塗ってクッキングシートを貼り、材料を入れる
+  - type: wait
+    wait: 3600
+    description: オーブンの台にお湯を張って120℃で60分の湯煎焼き
+    note: ちゃんと予熱しましょう
+  - type: text
+    description: お湯を捨ててオーブンの中で冷ます
+tags:
+  - 無糖ヨーグルト
+  - クリームチーズ
+  - 砂糖
+  - 小麦粉
+  - タマゴ
+  - 卵黄
+  - 卵白
+  - メレンゲ
+  - ミキサー
+  - ボウル
+  - オーブン

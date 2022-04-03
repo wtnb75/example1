@@ -1,0 +1,22 @@
+name: そぼろのレシピ
+tasks:
+  - type: url
+    url: https://www.youtube.com/watch?v=-fLGEZPv9xY
+    description: 【大食い】3色そぼろ丼 総重量6.0㎏～簡単・安い・美味い～
+    note: 元ネタです
+  - type: text
+    description: 牛ひき肉をお湯に加え5秒ほどくぐらせたらザルに上げる
+  - type: text
+    description: フライパンに牛ひき肉10、酒2、砂糖1、みりん1、濃口醤油2or1、生姜適量を加えたら火にかける
+  - type: text
+    description: 沸騰してきたらアクを取り除き、優しくヘラで混ぜながら水分が飛ぶまで炒め煮る
+  - type: text
+    description: ある程度水分を飛ばしたら仕上げに山椒を振る
+tags:
+  - 牛ひき肉
+  - 酒
+  - 砂糖
+  - みりん
+  - 濃口醤油
+  - 生姜
+  - 山椒

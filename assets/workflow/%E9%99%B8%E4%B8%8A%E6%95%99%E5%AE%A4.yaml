@@ -1,0 +1,26 @@
+name: 陸上教室のメニュー
+tasks:
+  - type: text
+    description: スキップ30m
+  - type: text
+    description: 腕振りスキップ
+  - type: text
+    description: 腕振りキックスキップ
+  - type: text
+    description: かかともも上げ歩き 片足ずつ15m
+    note: 腕振りを意識する。軸足はビシッと、つま先は上げる
+  - type: text
+    description: 両足交互 1歩おき(3拍子) 2本
+  - type: text
+    description: 両足 軸足2拍子 アップテンポ 軸足まっすぐ
+  - type: text
+    description: 小刻みに膝入れ替え 膝は上げずに前に 2本
+    note: カカトはつけない？
+  - type: text
+    description: 上記の複合 4拍子 3-1片足ずつ 2本ずつ
+    note: カカト上げを意識！
+  - type: text
+    description: 3拍子 15m + ラン 25m 2本
+tags:
+  - スキップ
+  - もも上げ
