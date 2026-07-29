@@ -5,7 +5,7 @@ import '../ioif.dart';
 class CheckPageIndex extends StatelessWidget {
   final IoIf input;
 
-  CheckPageIndex({this.input});
+  CheckPageIndex({required this.input});
 
   @override
   Widget build(BuildContext context) {

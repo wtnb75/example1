@@ -13,14 +13,14 @@ String obj2yaml(dynamic node) {
 dynamic yaml2obj_2(YamlNode node) {
   switch (node.runtimeType) {
     case YamlMap:
-      var res = Map<String, dynamic>();
+      var res = <String, dynamic>{};
       (node as YamlMap).keys.forEach((k) {
         var ks = k as String;
-        res[ks] = yaml2obj_2((node as YamlMap)[ks]);
+        res[ks] = yaml2obj_2(node[ks]);
       });
       return res;
     case YamlList:
-      var res = List<dynamic>();
+      var res = <dynamic>[];
       (node as YamlList).forEach((v) => res.add(yaml2obj_2(v)));
       return res;
     case YamlScalar:

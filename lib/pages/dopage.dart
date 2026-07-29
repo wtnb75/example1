@@ -6,11 +6,11 @@ import 'package:logging/logging.dart';
 import '../data.dart';
 import '../ioif.dart';
 
-final log = new Logger("dopage");
+final log = Logger("dopage");
 
 class WaitTimer extends StatefulWidget {
-  final Duration duration;
-  final Function onFinished;
+  final Duration? duration;
+  final Function? onFinished;
 
   WaitTimer({this.duration, this.onFinished});
 
@@ -20,9 +20,9 @@ class WaitTimer extends StatefulWidget {
 
 class _WaitTimerState extends State<WaitTimer> {
   String _time = '';
-  DateTime started;
-  Duration duration;
-  Timer tm;
+  DateTime? started;
+  Duration? duration;
+  Timer? tm;
   TextStyle style = normalStyle;
   static const TextStyle normalStyle = TextStyle(fontSize: 24);
   static const TextStyle stopStyle = TextStyle(fontSize: 24, color: Colors.red);
@@ -47,10 +47,10 @@ class _WaitTimerState extends State<WaitTimer> {
 
   void stopTimer() {
     if (tm != null) {
-      tm.cancel();
+      tm!.cancel();
     }
     if (started != null) {
-      duration = duration - DateTime.now().difference(started);
+      duration = duration! - DateTime.now().difference(started!);
     }
     style = stopStyle;
     started = null;
@@ -63,7 +63,7 @@ class _WaitTimerState extends State<WaitTimer> {
   }
 
   String durationStr(Duration val) {
-    var sec = val.inSeconds as int;
+    var sec = val.inSeconds;
     var minval = (sec / 60).floor();
     var secval = (sec % 60).floor();
     if (secval == 0) {
@@ -74,7 +74,7 @@ class _WaitTimerState extends State<WaitTimer> {
 
   Duration restDuration() {
     var now = DateTime.now();
-    return duration - now.difference(started);
+    return duration! - now.difference(started!);
   }
 
   void _onTimer(Timer timer) {
@@ -86,7 +86,7 @@ class _WaitTimerState extends State<WaitTimer> {
         style = stopStyle;
       });
       if (widget.onFinished != null) {
-        widget.onFinished();
+        widget.onFinished!();
       }
     } else {
       setState(() => _time = "${durationStr(rest)}");
@@ -97,10 +97,10 @@ class _WaitTimerState extends State<WaitTimer> {
   Widget build(BuildContext context) {
     if (started == null) {
       return GestureDetector(
-        child: Text(durationStr(duration), style: style),
+        child: Text(durationStr(duration!), style: style),
         onTap: () {
           setState(() {
-            _time = durationStr(duration);
+            _time = durationStr(duration!);
             startTimer();
           });
         },
@@ -128,7 +128,7 @@ class _WaitTimerState extends State<WaitTimer> {
 class DoPageIndex extends StatefulWidget {
   final IoIf input;
 
-  DoPageIndex({this.input}) {
+  DoPageIndex({required this.input}) {
     log.shout("input type: ${input.runtimeType}");
   }
 
@@ -137,7 +137,7 @@ class DoPageIndex extends StatefulWidget {
 }
 
 class _DoPageIndexState extends State<DoPageIndex> {
-  List<String> names;
+  List<String>? names;
 
   @override
   void dispose() {
@@ -162,13 +162,13 @@ class _DoPageIndexState extends State<DoPageIndex> {
   }
 
   Widget build1(BuildContext context, int index) {
-    log.shout("build1 ${index} ${names[index]}");
-    return FlatButton(
-      color: Colors.blueGrey[200],
-      child: Text(fname2name(names[index])),
+    log.shout("build1 ${index} ${names![index]}");
+    return TextButton(
+      style: TextButton.styleFrom(backgroundColor: Colors.blueGrey[200]),
+      child: Text(fname2name(names![index])),
       onPressed: () {
-        log.shout("pushed ${index}: ${names[index]}");
-        readWork(widget.input, "workflow/${names[index]}").then((work) {
+        log.shout("pushed ${index}: ${names![index]}");
+        readWork(widget.input, "workflow/${names![index]}").then((work) {
           log.shout("navigate to ${work.name}");
           Navigator.of(context)
               .push(MaterialPageRoute(builder: (c) => DoParent(flow: work)));
@@ -188,7 +188,7 @@ class _DoPageIndexState extends State<DoPageIndex> {
       spacing: 4.0,
       runSpacing: 4.0,
       direction: Axis.horizontal,
-      children: new List.generate(names.length, (i) => build1(context, i)),
+      children: List.generate(names!.length, (i) => build1(context, i)),
     );
   }
 }
@@ -196,7 +196,7 @@ class _DoPageIndexState extends State<DoPageIndex> {
 class DoParent extends StatelessWidget {
   final WorkFlow flow;
 
-  DoParent({this.flow});
+  DoParent({required this.flow});
 
   @override
   Widget build(BuildContext context) {
@@ -211,7 +211,7 @@ class DoParent extends StatelessWidget {
 class DoPage extends StatefulWidget {
   final WorkFlow flow;
 
-  DoPage({this.flow});
+  DoPage({required this.flow});
 
   @override
   _DoPageState createState() => _DoPageState();
@@ -225,29 +225,27 @@ class _DoPageState extends State<DoPage> {
     });
   }
 
-  List<bool> flags;
+  late List<bool> flags;
 
   @override
   void initState() {
-    if (flags == null) {
-      flags = widget.flow.tasks.map((e) => false).toList();
-    }
+    flags = widget.flow.tasks.map((e) => false).toList();
     super.initState();
   }
 
-  Widget maketip(TaskIf task, Widget prep, Widget post) {
+  Widget maketip(TaskIf task, Widget? prep, Widget? post) {
     List<Widget> res = <Widget>[];
     if (prep != null) {
       res.add(prep);
     }
     if (task.description != null) {
-      res.add(Expanded(child: Text(task.description)));
+      res.add(Expanded(child: Text(task.description!)));
     }
     if (post != null) {
       res.add(post);
     }
     if (task.note != null) {
-      return Tooltip(message: task.note, child: Row(children: res));
+      return Tooltip(message: task.note!, child: Row(children: res));
     } else {
       return Row(children: res);
     }
@@ -262,7 +260,7 @@ class _DoPageState extends State<DoPage> {
           Checkbox(
             value: flags[idx],
             onChanged: (flag) {
-              click(idx, flag);
+              click(idx, flag!);
             },
           ),
           null);
@@ -275,7 +273,7 @@ class _DoPageState extends State<DoPage> {
           Checkbox(
             value: flags[idx],
             onChanged: (flag) {
-              click(idx, flag);
+              click(idx, flag!);
             },
           ),
           WaitTimer(
@@ -285,7 +283,7 @@ class _DoPageState extends State<DoPage> {
               }));
     } else if (task is TaskUrl) {
       Widget res = maketip(task, null, null);
-      return Column(children: <Widget>[res, Text(task.url)]);
+      return Column(children: <Widget>[res, Text(task.url ?? "")]);
     }
     return Text("invalid task: ${task.runtimeType}, ${task.toMap()}");
   }

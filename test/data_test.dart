@@ -8,7 +8,7 @@ import 'package:example1/iofile.dart';
 import 'package:logging/logging.dart';
 import 'package:test/test.dart';
 
-void main(List<String> args) {
+void main() {
   var parser = new ArgParser();
   parser.addFlag('verbose', callback: (verbose) {
     if (verbose) {
@@ -18,7 +18,7 @@ void main(List<String> args) {
       });
     }
   });
-  var result = parser.parse(args);
+  var result = parser.parse(const []);
   log.shout("argument parsed: ${result}");
   test('yaml2obj', () {
     expect(yaml2obj("{}"), {});
