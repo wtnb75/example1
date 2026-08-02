@@ -2,19 +2,19 @@ import 'package:logging/logging.dart';
 
 import './ioif.dart';
 
-final log = new Logger("data");
+final log = Logger("data");
 
 class TaskIf {
-  String type;
-  String description;
-  String note;
+  String? type;
+  String? description;
+  String? note;
 
   TaskIf(Map<String, dynamic> obj) {
     fromMap(obj);
   }
 
   void fromMap(Map<String, dynamic> obj) {
-    log.shout("fromMap: ${obj}");
+    log.shout("fromMap: $obj");
     type = obj["type"];
     if (obj["description"] is List) {
       description = obj["description"].join("\n");
@@ -29,7 +29,7 @@ class TaskIf {
   }
 
   Map<String, dynamic> toMap() {
-    var res = Map<String, dynamic>();
+    var res = <String, dynamic>{};
     if (type != null) {
       res["type"] = type;
     }
@@ -44,18 +44,19 @@ class TaskIf {
 }
 
 class TaskText extends TaskIf {
-  TaskText(Map<String, dynamic> obj) : super(obj);
+  TaskText(super.obj);
 }
 
 class TaskNote extends TaskIf {
-  TaskNote(Map<String, dynamic> obj) : super(obj);
+  TaskNote(super.obj);
 }
 
 class TaskUrl extends TaskIf {
-  String url;
+  String? url;
 
-  TaskUrl(Map<String, dynamic> obj) : super(obj);
+  TaskUrl(super.obj);
 
+  @override
   void fromMap(Map<String, dynamic> obj) {
     super.fromMap(obj);
     url = obj["url"];
@@ -63,7 +64,7 @@ class TaskUrl extends TaskIf {
 }
 
 class TaskWait extends TaskIf {
-  Duration wait;
+  Duration? wait;
 
   TaskWait(Map<String, dynamic> obj) : super(obj) {
     fromMap(obj);
@@ -73,13 +74,13 @@ class TaskWait extends TaskIf {
     if (wait == null) {
       return "(invalid)";
     }
-    var sec = wait.inSeconds;
+    var sec = wait!.inSeconds;
     var minval = (sec / 60).floor();
     var secval = (sec % 60).floor();
     if (secval == 0) {
-      return "${minval} min";
+      return "$minval min";
     }
-    return "${minval}:${secval.toString().padLeft(2, '0')}";
+    return "$minval:${secval.toString().padLeft(2, '0')}";
   }
 
   @override
@@ -99,7 +100,7 @@ class TaskWait extends TaskIf {
   @override
   Map<String, dynamic> toMap() {
     var res = super.toMap();
-    res["wait"] = wait.inSeconds;
+    res["wait"] = wait?.inSeconds;
     return res;
   }
 }
@@ -118,7 +119,7 @@ TaskIf genTask(Map<String, dynamic> obj) {
   return TaskIf(obj);
 }
 
-enum TextElementType { Text, Tag, Number }
+enum TextElementType { text, tag, number }
 
 class TextElement {
   TextElementType type;
@@ -126,17 +127,18 @@ class TextElement {
 
   TextElement(this.type, this.value);
 
+  @override
   String toString() {
-    return "${value}(${type.toString().split(".")[1]})";
+    return "$value(${type.toString().split(".")[1]})";
   }
 }
 
 class WorkFlow {
-  String name;
-  String description;
-  String note;
-  List<TaskIf> tasks;
-  List<String> tags;
+  String? name;
+  String? description;
+  String? note;
+  late List<TaskIf> tasks;
+  late List<String> tags;
 
   WorkFlow(Map<String, dynamic> obj) {
     fromMap(obj);
@@ -147,43 +149,45 @@ class WorkFlow {
     description = obj["description"];
     note = obj["note"];
     tags = (obj["tags"] as List<dynamic>).cast<String>();
-    tasks = List<TaskIf>();
+    tasks = <TaskIf>[];
     obj["tasks"].forEach((e) {
       tasks.add(genTask(e));
     });
   }
 
   Map<String, dynamic> toMap() {
-    var res = Map<String, dynamic>();
+    var res = <String, dynamic>{};
     res["name"] = name;
     res["tags"] = tags;
-    var tsks = List<Map<String, dynamic>>();
-    tasks.forEach((f) => tsks.add(f.toMap()));
+    var tsks = <Map<String, dynamic>>[];
+    for (var f in tasks) {
+      tsks.add(f.toMap());
+    }
     res["tasks"] = tsks;
     return res;
   }
 
   List<TextElement> tagger(String descr) {
-    var res = List<TextElement>();
+    var res = <TextElement>[];
     var tagset = Set.of(tags);
     var tg = tagset.toList();
     tg.sort((a, b) => b.length.compareTo(a.length));
     var desc = [descr];
     for (var t in tg) {
-      log.shout("desc: ${desc}, tags: ${t}/${tags}");
+      log.shout("desc: $desc, tags: $t/$tags");
       var res = <String>[];
       for (var d in desc) {
         if (tags.contains(d)) {
-          log.shout("it is tag ${d}");
+          log.shout("it is tag $d");
           res.add(d);
           continue;
         }
         var token = d.split(t);
         if (token.length == 1) {
-          log.shout("not split: ${d}");
+          log.shout("not split: $d");
           res.add(d);
         } else {
-          log.shout("split: token=${token}, t=${t}, d=${d}");
+          log.shout("split: token=$token, t=$t, d=$d");
           res.add(token[0]);
           for (var i = 1; i < token.length; i++) {
             res.add(t);
@@ -194,35 +198,35 @@ class WorkFlow {
       desc = res;
     }
     desc.removeWhere((s) => s == "");
-    log.shout("split result: ${desc}");
-    var numpat = new RegExp('[0-9]+');
-    desc.forEach((txt) {
+    log.shout("split result: $desc");
+    var numpat = RegExp('[0-9]+');
+    for (var txt in desc) {
       if (tagset.contains(txt)) {
-        log.shout("tag: ${txt}");
-        res.add(TextElement(TextElementType.Tag, txt));
+        log.shout("tag: $txt");
+        res.add(TextElement(TextElementType.tag, txt));
       } else {
         var matches = numpat.allMatches(txt);
         var cur = 0;
-        matches.forEach((m) {
+        for (var m in matches) {
           if (m.start != cur) {
             res.add(
-                TextElement(TextElementType.Text, txt.substring(cur, m.start)));
+                TextElement(TextElementType.text, txt.substring(cur, m.start)));
           }
-          res.add(TextElement(TextElementType.Number, m.group(0)));
+          res.add(TextElement(TextElementType.number, m.group(0)!));
           cur = m.end;
-        });
-        res.add(TextElement(TextElementType.Text, txt.substring(cur)));
+        }
+        res.add(TextElement(TextElementType.text, txt.substring(cur)));
       }
-    });
+    }
     return res;
   }
 }
 
 class HistoryElement {
-  String name;
-  bool checked;
-  DateTime checkedAt;
-  String note;
+  String? name;
+  bool? checked;
+  DateTime? checkedAt;
+  String? note;
 
   Map<String, dynamic> toMap() {
     return {
@@ -242,10 +246,10 @@ class HistoryElement {
 }
 
 class History {
-  String name;
-  DateTime startedAt;
-  DateTime finishedAt;
-  List<HistoryElement> data;
+  String? name;
+  DateTime? startedAt;
+  DateTime? finishedAt;
+  late List<HistoryElement> data;
 
   Map<String, dynamic> toMap() {
     return {
@@ -260,7 +264,7 @@ class History {
     name = obj["name"];
     startedAt = obj["startedAt"];
     finishedAt = obj["finishedAt"];
-    data = List<HistoryElement>();
+    data = <HistoryElement>[];
     obj["data"].forEach((e) {
       var r = HistoryElement();
       r.fromMap(e);
@@ -270,8 +274,8 @@ class History {
 }
 
 Future<WorkFlow> readWork(IoIf inp, String name) {
-  log.shout("reading work ${name}");
-  return inp.readMap(name).then((obj) => new WorkFlow(obj));
+  log.shout("reading work $name");
+  return inp.readMap(name).then((obj) => WorkFlow(obj));
 }
 
 Future<List<String>> listWork(IoIf inp) {

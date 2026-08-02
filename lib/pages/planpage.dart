@@ -6,19 +6,19 @@ import '../ioif.dart';
 class PlanPageIndex extends StatefulWidget {
   final IoIf input;
 
-  PlanPageIndex({this.input});
+  const PlanPageIndex({super.key, required this.input});
 
   @override
-  _PlanPageIndexState createState() => _PlanPageIndexState();
+  State<PlanPageIndex> createState() => _PlanPageIndexState();
 }
 
 class _PlanPageIndexState extends State<PlanPageIndex> {
-  List<String> names;
+  List<String>? names;
 
   @override
   void dispose() {
     super.dispose();
-    log.shout("dispose ${this.runtimeType}");
+    log.shout("dispose $runtimeType");
   }
 
   void reload() async {
@@ -39,13 +39,14 @@ class _PlanPageIndexState extends State<PlanPageIndex> {
   }
 
   Widget build1(BuildContext context, int index) {
-    return FlatButton(
-      color: Colors.blueGrey[200],
-      child: Text(fname2name(names[index])),
+    return TextButton(
+      style: TextButton.styleFrom(backgroundColor: Colors.blueGrey[200]),
+      child: Text(fname2name(names![index])),
       onPressed: () {
-        log.shout("pushed ${index}: ${names[index]}");
-        readWork(widget.input, "workflow/${names[index]}").then((work) {
+        log.shout("pushed $index: ${names![index]}");
+        readWork(widget.input, "workflow/${names![index]}").then((work) {
           log.shout("navigate to ${work.name}");
+          if (!context.mounted) return;
           Navigator.of(context)
               .push(MaterialPageRoute(builder: (c) => PlanParent(flow: work)));
         });
@@ -53,9 +54,9 @@ class _PlanPageIndexState extends State<PlanPageIndex> {
     );
   }
 
-  Widget build_add(BuildContext context) {
+  Widget buildAdd(BuildContext context) {
     return IconButton(
-      icon: Icon(Icons.add),
+      icon: const Icon(Icons.add),
       onPressed: () {
         log.shout("pushed");
       },
@@ -66,15 +67,15 @@ class _PlanPageIndexState extends State<PlanPageIndex> {
   Widget build(BuildContext context) {
     if (names == null) {
       reload();
-      return Text("loading...");
+      return const Text("loading...");
     }
     return Wrap(
         spacing: 4.0,
         runSpacing: 4.0,
         direction: Axis.horizontal,
-        children: new List.generate(names.length + 2, (i) {
-          if (i == 0 || i == names.length + 1) {
-            return build_add(context);
+        children: List.generate(names!.length + 2, (i) {
+          if (i == 0 || i == names!.length + 1) {
+            return buildAdd(context);
           } else {
             return build1(context, i - 1);
           }
@@ -85,7 +86,7 @@ class _PlanPageIndexState extends State<PlanPageIndex> {
 class PlanParent extends StatelessWidget {
   final WorkFlow flow;
 
-  PlanParent({this.flow});
+  const PlanParent({super.key, required this.flow});
 
   @override
   Widget build(BuildContext context) {
@@ -99,14 +100,14 @@ class PlanParent extends StatelessWidget {
 class PlanPageEach extends StatefulWidget {
   final PlanParent parent;
 
-  PlanPageEach({this.parent});
+  const PlanPageEach({super.key, required this.parent});
 
   @override
-  _PlanPageEachState createState() => _PlanPageEachState();
+  State<PlanPageEach> createState() => _PlanPageEachState();
 }
 
 class _PlanPageEachState extends State<PlanPageEach> {
-  TextEditingController _namectrl;
+  late TextEditingController _namectrl;
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -123,17 +124,17 @@ class _PlanPageEachState extends State<PlanPageEach> {
     super.dispose();
   }
 
-  Widget build_form(BuildContext context) {
+  Widget buildForm(BuildContext context) {
     return Form(
         key: _formKey,
         child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               TextFormField(
-                decoration: InputDecoration(labelText: "name: "),
+                decoration: const InputDecoration(labelText: "name: "),
                 controller: _namectrl,
                 validator: (value) {
-                  if (value.isEmpty) {
+                  if (value == null || value.isEmpty) {
                     return "Please enter some text";
                   } else {
                     return null;
@@ -142,11 +143,11 @@ class _PlanPageEachState extends State<PlanPageEach> {
               ),
               Padding(
                   padding: const EdgeInsets.symmetric(vertical: 16.0),
-                  child: RaisedButton(
-                    child: Text("Submit"),
+                  child: ElevatedButton(
+                    child: const Text("Submit"),
                     onPressed: () {
-                      if (_formKey.currentState.validate()) {
-                        log.shout("pressed submit ${name}");
+                      if (_formKey.currentState!.validate()) {
+                        log.shout("pressed submit $name");
                       }
                     },
                   ))
@@ -157,9 +158,9 @@ class _PlanPageEachState extends State<PlanPageEach> {
   Widget build(BuildContext context) {
     return OrientationBuilder(builder: (context, orientation) {
       if (orientation == Orientation.portrait) {
-        return build_form(context);
+        return buildForm(context);
       } else {
-        return build_form(context);
+        return buildForm(context);
       }
     });
   }

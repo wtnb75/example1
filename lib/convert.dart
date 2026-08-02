@@ -11,19 +11,21 @@ String obj2yaml(dynamic node) {
 }
 
 dynamic yaml2obj_2(YamlNode node) {
-  switch (node.runtimeType) {
-    case YamlMap:
-      var res = Map<String, dynamic>();
-      (node as YamlMap).keys.forEach((k) {
+  switch (node) {
+    case YamlMap _:
+      var res = <String, dynamic>{};
+      for (var k in node.keys) {
         var ks = k as String;
-        res[ks] = yaml2obj_2((node as YamlMap)[ks]);
-      });
+        res[ks] = yaml2obj_2(node[ks]);
+      }
       return res;
-    case YamlList:
-      var res = List<dynamic>();
-      (node as YamlList).forEach((v) => res.add(yaml2obj_2(v)));
+    case YamlList _:
+      var res = <dynamic>[];
+      for (var v in node) {
+        res.add(yaml2obj_2(v));
+      }
       return res;
-    case YamlScalar:
+    case YamlScalar _:
       return node.value;
   }
   return null;
