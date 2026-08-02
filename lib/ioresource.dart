@@ -13,14 +13,14 @@ class IoResource extends IoIf {
 
   @override
   Future<List<String>> ls(String path) {
-    log.shout("loading ${path}/index.yaml");
+    log.shout("loading $path/index.yaml");
     // Deliberately uses read()+yaml2obj() (dynamic) rather than readMap()
     // (Map<String, dynamic>): index.yaml's top level may genuinely be either
     // a Map or a List at runtime, and readMap()'s declared return type would
     // make the analyzer treat the Map branch below as statically guaranteed,
     // masking the real List case this method is written to also handle.
-    return read("${path}/index.yaml").then((s) => yaml2obj(s)).then((r) {
-      log.shout("read: ${r}");
+    return read("$path/index.yaml").then((s) => yaml2obj(s)).then((r) {
+      log.shout("read: $r");
       if (r is Map) {
         var rmap = r as Map<String, dynamic>;
         if (rmap.keys.isNotEmpty) {

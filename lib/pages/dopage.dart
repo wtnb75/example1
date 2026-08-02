@@ -12,10 +12,10 @@ class WaitTimer extends StatefulWidget {
   final Duration? duration;
   final Function? onFinished;
 
-  WaitTimer({this.duration, this.onFinished});
+  const WaitTimer({super.key, this.duration, this.onFinished});
 
   @override
-  State<StatefulWidget> createState() => _WaitTimerState(duration: duration);
+  State<WaitTimer> createState() => _WaitTimerState();
 }
 
 class _WaitTimerState extends State<WaitTimer> {
@@ -27,13 +27,17 @@ class _WaitTimerState extends State<WaitTimer> {
   static const TextStyle normalStyle = TextStyle(fontSize: 24);
   static const TextStyle stopStyle = TextStyle(fontSize: 24, color: Colors.red);
 
-  _WaitTimerState({this.duration});
+  @override
+  void initState() {
+    super.initState();
+    duration = widget.duration;
+  }
 
   void startTimer() {
     log.shout("startTimer");
     started = DateTime.now();
     tm = Timer.periodic(
-      Duration(seconds: 1),
+      const Duration(seconds: 1),
       _onTimer,
     );
     style = normalStyle;
@@ -67,9 +71,9 @@ class _WaitTimerState extends State<WaitTimer> {
     var minval = (sec / 60).floor();
     var secval = (sec % 60).floor();
     if (secval == 0) {
-      return "${minval} min";
+      return "$minval min";
     }
-    return "${minval}:${secval.toString().padLeft(2, '0')}";
+    return "$minval:${secval.toString().padLeft(2, '0')}";
   }
 
   Duration restDuration() {
@@ -89,7 +93,7 @@ class _WaitTimerState extends State<WaitTimer> {
         widget.onFinished!();
       }
     } else {
-      setState(() => _time = "${durationStr(rest)}");
+      setState(() => _time = durationStr(rest));
     }
   }
 
@@ -128,12 +132,12 @@ class _WaitTimerState extends State<WaitTimer> {
 class DoPageIndex extends StatefulWidget {
   final IoIf input;
 
-  DoPageIndex({required this.input}) {
+  DoPageIndex({super.key, required this.input}) {
     log.shout("input type: ${input.runtimeType}");
   }
 
   @override
-  _DoPageIndexState createState() => _DoPageIndexState();
+  State<DoPageIndex> createState() => _DoPageIndexState();
 }
 
 class _DoPageIndexState extends State<DoPageIndex> {
@@ -142,7 +146,7 @@ class _DoPageIndexState extends State<DoPageIndex> {
   @override
   void dispose() {
     super.dispose();
-    log.shout("dispose ${this.runtimeType}");
+    log.shout("dispose $runtimeType");
   }
 
   void reload() async {
@@ -162,14 +166,15 @@ class _DoPageIndexState extends State<DoPageIndex> {
   }
 
   Widget build1(BuildContext context, int index) {
-    log.shout("build1 ${index} ${names![index]}");
+    log.shout("build1 $index ${names![index]}");
     return TextButton(
       style: TextButton.styleFrom(backgroundColor: Colors.blueGrey[200]),
       child: Text(fname2name(names![index])),
       onPressed: () {
-        log.shout("pushed ${index}: ${names![index]}");
+        log.shout("pushed $index: ${names![index]}");
         readWork(widget.input, "workflow/${names![index]}").then((work) {
           log.shout("navigate to ${work.name}");
+          if (!context.mounted) return;
           Navigator.of(context)
               .push(MaterialPageRoute(builder: (c) => DoParent(flow: work)));
         });
@@ -181,7 +186,7 @@ class _DoPageIndexState extends State<DoPageIndex> {
   Widget build(BuildContext context) {
     if (names == null) {
       reload();
-      return Text("loading...");
+      return const Text("loading...");
     }
     log.shout("wrap");
     return Wrap(
@@ -196,7 +201,7 @@ class _DoPageIndexState extends State<DoPageIndex> {
 class DoParent extends StatelessWidget {
   final WorkFlow flow;
 
-  DoParent({required this.flow});
+  const DoParent({super.key, required this.flow});
 
   @override
   Widget build(BuildContext context) {
@@ -211,15 +216,15 @@ class DoParent extends StatelessWidget {
 class DoPage extends StatefulWidget {
   final WorkFlow flow;
 
-  DoPage({required this.flow});
+  const DoPage({super.key, required this.flow});
 
   @override
-  _DoPageState createState() => _DoPageState();
+  State<DoPage> createState() => _DoPageState();
 }
 
 class _DoPageState extends State<DoPage> {
   void click(int idx, bool newstate) {
-    log.shout("clicked: idx=${idx}, state=${newstate}");
+    log.shout("clicked: idx=$idx, state=$newstate");
     setState(() {
       flags[idx] = newstate;
     });
@@ -252,7 +257,7 @@ class _DoPageState extends State<DoPage> {
   }
 
   Widget _makewidget(int idx, TaskIf task) {
-    log.shout("task${idx} type=${task.type} ${task.runtimeType}");
+    log.shout("task$idx type=${task.type} ${task.runtimeType}");
     if (task is TaskText) {
       log.shout("text ${task.toMap()}");
       return maketip(

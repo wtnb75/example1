@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer' as developer;
 import 'dart:io';
 
 import 'package:args/args.dart';
@@ -9,17 +10,22 @@ import 'package:logging/logging.dart';
 import 'package:test/test.dart';
 
 void main() {
-  var parser = new ArgParser();
+  var parser = ArgParser();
   parser.addFlag('verbose', callback: (verbose) {
     if (verbose) {
       Logger.root.level = Level.ALL; // defaults to Level.INFO
       Logger.root.onRecord.listen((record) {
-        print('${record.level.name}: ${record.time}: ${record.message}');
+        developer.log(
+          record.message,
+          time: record.time,
+          level: record.level.value,
+          name: record.loggerName,
+        );
       });
     }
   });
   var result = parser.parse(const []);
-  log.shout("argument parsed: ${result}");
+  log.shout("argument parsed: $result");
   test('yaml2obj', () {
     expect(yaml2obj("{}"), {});
     expect(yaml2obj("{a: 1}"), {"a": 1});
@@ -39,20 +45,20 @@ void main() {
     """;
     var wf = WorkFlow(jsonDecode(input));
     var res = wf.tagger("hello world 123 help321");
-    log.shout("${res}");
-    expect(res[0].type, TextElementType.Tag);
+    log.shout("$res");
+    expect(res[0].type, TextElementType.tag);
     expect(res[0].value, "hel");
-    expect(res[1].type, TextElementType.Text);
+    expect(res[1].type, TextElementType.text);
     expect(res[1].value, "lo ");
-    expect(res[2].type, TextElementType.Tag);
+    expect(res[2].type, TextElementType.tag);
     expect(res[2].value, "world");
-    expect(res[3].type, TextElementType.Text);
+    expect(res[3].type, TextElementType.text);
     expect(res[3].value, " ");
-    expect(res[4].type, TextElementType.Number);
+    expect(res[4].type, TextElementType.number);
     expect(res[4].value, "123");
-    expect(res[5].type, TextElementType.Text);
+    expect(res[5].type, TextElementType.text);
     expect(res[5].value, " ");
-    expect(res[6].type, TextElementType.Tag);
+    expect(res[6].type, TextElementType.tag);
     expect(res[6].value, "help321");
     expect(res.length, 7);
   });
@@ -69,7 +75,7 @@ void main() {
     expect(ls, ["hello"]);
     await db.remove("hello");
     var ls2 = await db.ls(".");
-    log.shout("ls result: ${ls2}");
+    log.shout("ls result: $ls2");
     expect(ls2.isEmpty, true);
     log.shout("remove ${db.root}");
     await db.root.delete();

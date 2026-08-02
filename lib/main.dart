@@ -1,3 +1,5 @@
+import 'dart:developer' as developer;
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:logging/logging.dart';
@@ -14,13 +16,20 @@ final iomod = IoResource(bundle: rootBundle);
 void main() {
   Logger.root.level = Level.ALL;
   Logger.root.onRecord.listen((LogRecord rec) {
-    print('${rec.time} ${rec.loggerName} ${rec.level.name} ${rec.message}');
+    developer.log(
+      rec.message,
+      time: rec.time,
+      level: rec.level.value,
+      name: rec.loggerName,
+    );
   });
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -28,7 +37,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: AppPage(title: ""),
+      home: const AppPage(title: ""),
     );
   }
 }
@@ -36,7 +45,7 @@ class MyApp extends StatelessWidget {
 class AppPage extends StatelessWidget {
   final String title;
 
-  AppPage({Key? key, required this.title}) : super(key: key);
+  const AppPage({super.key, required this.title});
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +53,7 @@ class AppPage extends StatelessWidget {
         length: 4,
         child: Scaffold(
           appBar: AppBar(
-              title: TabBar(tabs: [
+              title: const TabBar(tabs: [
             Tab(icon: Icon(Icons.edit), text: "Plan"),
             Tab(icon: Icon(Icons.work), text: "Do"),
             Tab(icon: Icon(Icons.check), text: "Check"),
