@@ -6,7 +6,7 @@
 // the stock `flutter create` counter-app template, which doesn't apply to
 // this codebase.
 
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:example1/main.dart';
